@@ -18,8 +18,9 @@ export default function NovaMercadoria({ navigation }) {
         launchImageLibrary({ mediaType: "photo" }, response => {
             setFoto(response);
             setUriFoto(response.uri);
-            console.log(response)
+            
         })
+        console.log(foto)
         setMostrarOpcao(false)
     }
 
@@ -32,24 +33,27 @@ export default function NovaMercadoria({ navigation }) {
     }
 
     const salvaMercadoria = async () => {
-        if (nome && precoCompra && precoVenda && foto) {
-            const corpo = new FormData()
-            corpo.append("nome", nome);
-            corpo.append("precoCompra", precoCompra);
-            corpo.append("precoVenda", precoVenda);
-            corpo.append("img", {
-                name: foto.fileName,
-                type: foto.type,
-                uri: foto.uri
-            })
-            corpo.append("token", await AsyncStorage.getItem("token"))
-            const result = await fetch("http://192.168.1.10:3333/mercadoria", {
-                method: "post",
-                body: corpo
-            })
-            const json = await result.json();
-            if (json.success) {
-                navigation.navigate("Mercadoria")
+        if (nome && precoCompra && precoVenda) {
+            try {
+                const corpo = new FormData()
+                corpo.append("nome", nome);
+                corpo.append("precoCompra", precoCompra);
+                corpo.append("precoVenda", precoVenda);
+                corpo.append("token", await AsyncStorage.getItem("token"))
+                corpo.append("img",{
+                    type: foto.type,
+                    
+                })
+                const result = await fetch("https://bdpapilast.herokuapp.com/mercadoria", {
+                    method: "POST",
+                    body: corpo
+                })
+                const json = await result.json();
+                if (json.success) {
+                    navigation.navigate("Mercadoria")
+                }
+            } catch (error) {
+                console.log(error.message)
             }
         }
     }

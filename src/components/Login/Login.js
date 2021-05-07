@@ -13,7 +13,7 @@ export default function Login({ navigation }) {
     const logar = async () => {
         setIsLoading(true)
         if (usuario && senha) {
-            const result = await fetch("https://baldosplasticosapi.herokuapp.com/login", {
+            const result = await fetch("https://bdpapilast.herokuapp.com/login", {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json"

@@ -15,17 +15,14 @@ export default function Mercadoria({ navigation }) {
 
             const getMercadorias = async () => {
                 setLoading(true)
-                const result = await fetch(`http://192.168.1.10:3333/mercadoria/limite/0`);
+                const result = await fetch(`https://bdpapilast.herokuapp.com/mercadoria/limite?pulos=` + "0");
                 const json = await result.json();
-                
-                if (json.mercadorias) {
-                    setMercadorias(json.mercadorias)
-                }
-                setLoading(false)
+                setMercadorias(json.mercadorias[0])
+                console.log(json)
             }
 
             getMercadorias()
-
+            setLoading(false)
             return () => {
                 setMercadorias([]);
                 setLoading(false)
